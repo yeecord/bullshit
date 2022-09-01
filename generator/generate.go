@@ -17,7 +17,7 @@ type Data struct {
 	Bullshit []string
 }
 
-const MAX_LENGTH int = 1000
+const MAX_LENGTH int = 50000
 
 var data Data
 
@@ -78,14 +78,14 @@ func Generate(topic string, minLen int) string {
 	rand.Seed(time.Now().UnixNano())
 	var ret string
 	var hasTopic bool
-	indent := strings.Repeat("&nbsp;", 8)
+	// indent := strings.Repeat("", 8)
 
 	for utf8.RuneCountInString(ret) < minLen || !canEnd(ret) || !hasTopic {
 		x := rand.Intn(100)
 		if x < 5 && canEnd(ret) {
 			// New paragraph
-			ret += "<br><br>" + indent
-			minLen += 10
+			ret += "\n\n"
+			minLen += 2
 		} else if x < 27 {
 			// New famous sentence
 			if len(shuffledFamous) == 0 {
@@ -114,6 +114,5 @@ func Generate(topic string, minLen int) string {
 			ret += b
 		}
 	}
-	ret = indent + ret
 	return ret
 }
