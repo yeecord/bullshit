@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/StillFantastic/bullshit/generator"
-	"github.com/rs/cors"
 	"net/http"
 	"os"
+
+	"github.com/StillFantastic/bullshit/generator"
+	"github.com/rs/cors"
 )
 
 type Data struct {
@@ -50,10 +51,13 @@ func main() {
 	mux.HandleFunc("/bullshit", bullshitHandler)
 	handler := cors.Default().Handler(mux)
 	var addr string
-	if len(os.Args) < 2 {
-		addr = "0.0.0.0:10000"
+
+	port := os.Getenv("PORT")
+
+	if len(port) == 0 {
+		addr = "0.0.0.0:80"
 	} else {
-		addr = "0.0.0.0:" + os.Args[1]
+		addr = "0.0.0.0:" + port
 	}
 	err := http.ListenAndServe(addr, limit(handler))
 	if err != nil {
